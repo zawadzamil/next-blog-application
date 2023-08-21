@@ -1,7 +1,18 @@
 import Link from "next/link";
 import { Fragment } from 'react';
+import GetAllCategories from "./api/getAllCategories";
+import GetLatestPosts from "./api/getLtestPosts";
 
-export default function Home() {
+export default async function Home() {
+
+  const latestPosts = await GetLatestPosts();
+
+  const categories = await GetAllCategories();
+
+  const imageStyle = {
+    height: '200px',
+};
+
   return (
     <Fragment>
       <section>
@@ -19,17 +30,70 @@ export default function Home() {
               </svg>
             </div>
             <h1 class="max-w-5xl text-2xl font-bold leading-none tracking-tighter text-neutral-600 md:text-5xl lg:text-6xl lg:max-w-7xl">
-             Welcome to<br class="hidden lg:block"></br>
-               Ostad Blog Application
+              Welcome to<br class="hidden lg:block"></br>
+              Ostad Blog Application
             </h1>
 
-            <p class="max-w-xl mx-auto mt-8 text-base leading-relaxed text-center text-gray-500">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
-
             <div>
-              <button className='bg-blue-600 text-white  rounded-md px-4 py-2 mt-2'>
-              <Link href= "/blog">Visit Blogs</Link>
+              <button className='bg-blue-600 text-white  rounded-md px-4 py-2 mt-8'>
+                <Link href="/blog">Visit Blogs</Link>
               </button>
             </div>
+          </div>
+        </div>
+
+
+      </section>
+
+      <section class = "categories container p-12 m-7">
+        <h2 class = "text-3xl text-gray-700 text-center mb-8">Brows Categories</h2>
+     {
+      categories.map(category=>(
+        <button class="rounded-full bg-gray-800 text-white py-2 px-3 m-4">{category.name}</button>
+      ))
+     }
+      </section>
+
+      <section class="latest-blogs">
+        <div class="container">
+          <h2 class="text-4xl text-gray-800 text-center fw-bold">
+            Latest Blogs
+          </h2>
+          <div class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4 mt-4 p-10">
+            
+
+             {
+              latestPosts.map(blog=>(
+                <div class="basis-1/4 mx-2 ">
+                <div
+                className="block blog-card rounded-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
+                <a href="#!">
+                  <img className="rounded-t-lg" src={blog.img} alt="" style={imageStyle} />
+                </a>
+                <div className="p-6">
+                  <Link href={`/blog/${blog.id}`}>
+                    <h5
+                      className="mb-2 text-xl font-medium leading-tight text-neutral-800 dark:text-neutral-50">
+                      {blog.title}
+                    </h5>
+                  </Link>
+                  <h6>{blog.created_at}</h6>
+                  <p className="mb-4 text-base text-neutral-600 dark:text-neutral-200">
+                    {blog.short}
+                  </p>
+
+                  <Link href={`/blog/${blog.id}`}>
+                    <button
+                      type="button"
+                      className="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-gray-900 bg-blue-400">
+                      Read More
+                    </button>
+                  </Link>
+                </div>
+              </div>
+              </div>
+              ))
+             }
           </div>
         </div>
       </section>

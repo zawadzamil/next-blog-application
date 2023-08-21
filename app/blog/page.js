@@ -1,7 +1,10 @@
 import Link from "next/link";
-import blogs from '../util/blog.json';
+import GetAllPosts from "../api/getAllPosts";
+import { useRouter } from 'next/router';
 
-export default function page() {
+export default async function page() {
+    
+    const blogs = await GetAllPosts();
     const imageStyle = {
         height: '200px',
     };
@@ -15,7 +18,7 @@ export default function page() {
                         <div
                             className="block blog-card rounded-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
                             <a href="#!">
-                                <img className="rounded-t-lg" src={blog.image} alt="" style={imageStyle} />
+                                <img className="rounded-t-lg" src={blog.img} alt="" style={imageStyle} />
                             </a>
                             <div className="p-6">
                                 <Link href={`/blog/${blog.id}`}>
@@ -24,9 +27,9 @@ export default function page() {
                                         {blog.title}
                                     </h5>
                                 </Link>
-                                <h6>{blog.date}</h6>
+                                <h6>{blog.created_at}</h6>
                                 <p className="mb-4 text-base text-neutral-600 dark:text-neutral-200">
-                                    {blog.content}
+                                    {blog.short}
                                 </p>
 
                                 <Link href={`/blog/${blog.id}`}>
