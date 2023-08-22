@@ -1,6 +1,6 @@
-export default async function GetAllPosts({ categoryId }) {
+export default async function GetSinglePost(id) {
     const res = await fetch(
-        `https://basic-blog.teamrabbil.com/api/post-list/${categoryId || 1}`
+        `https://basic-blog.teamrabbil.com/api/post-details/${id}`
     );
 
     if (!res.ok) {
